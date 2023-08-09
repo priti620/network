@@ -22,5 +22,5 @@ resource "google_compute_firewall" "fw-2" {
 
   priority = 1000
 
-  source_ranges = var.authorized_source_ranges
+  source_ranges = ["10.10.20.0/24"]
 }
