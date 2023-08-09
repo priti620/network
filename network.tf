@@ -7,7 +7,7 @@ resource "google_compute_network" "vpc" {
 resource "google_compute_subnetwork" "subnet-1" {
   name          = "subnet-1"
   ip_cidr_range = "10.10.10.0/24"
-  network       = google_compute_network.custom.id
+  network       = google_compute_network.vpc.id
   region        = var.region
 
   secondary_ip_range  = [
@@ -27,7 +27,7 @@ resource "google_compute_subnetwork" "subnet-1" {
 resource "google_compute_subnetwork" "subnet-2" {
   name          = "subnet-1"
   ip_cidr_range = "10.20.10.0/24"
-  network       = google_compute_network.custom.id
+  network       = google_compute_network.vpc.id
   region        = var.region
 
   private_ip_google_access = true
