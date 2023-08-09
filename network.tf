@@ -1,6 +1,6 @@
 module "vpc" {
     source  = "terraform-google-modules/network/google//modules/vpc"
-    version = "~>4.0"
+    version = "7.2.0."
     project_id   = var.project_id
     network_name = var.network_name
     routing_mode = "GLOBAL"
@@ -8,7 +8,7 @@ module "vpc" {
 }
 module "subnets" {
     source  = "terraform-google-modules/network/google//modules/subnets"
-    version =  "3.63.0"
+    version =  "7.2.0."
     project_id   = var.project_id
     network_name = module.vpc.network_name
     subnets = [
