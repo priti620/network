@@ -8,7 +8,7 @@ module "vpc" {
 }
 module "subnets" {
     source  = "terraform-google-modules/network/google//modules/subnets"
-    version = "~>4.0"
+    version =  "3.63.0"
     project_id   = var.project_id
     network_name = module.vpc.network_name
     subnets = [
