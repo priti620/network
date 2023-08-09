@@ -1,38 +1,34 @@
-module "vpc" {
-    source  = "terraform-google-modules/network/google//modules/vpc"
-    version = "7.2.0."
-    project_id   = var.project_id
-    network_name = var.network_name
-    routing_mode = "GLOBAL"
-    
+resource "google_compute_network" "vpc-tfe" {
+  name                    = "custom"
+  auto_create_subnetworks = "false" 
+  routing_mode            = "GLOBAL"
 }
-module "subnets" {
-    source  = "terraform-google-modules/network/google//modules/subnets"
-    version =  "7.2.0."
-    project_id   = var.project_id
-    network_name = module.vpc.network_name
-    subnets = [
-        {
-            subnet_name           = "subnet1"
-            subnet_ip             = "10.1.0.0/26"
-            subnet_region         = "us-central1"
-            subnet_private_access = "true"
-            subnet_flow_logs      = "false"
-        },
 
-        {
-            subnet_name           = "subnet2"
-            subnet_ip             = "10.2.0.0/26"
-            subnet_region         = "us-central1"
-            subnet_private_access = "true"
-            subnet_flow_logs      = "false"
-        },
-        {
-            subnet_name           = "subnet3"
-            subnet_ip             = "10.3.0.0/26"
-            subnet_region         = "us-central1"
-            subnet_private_access = "true"
-            subnet_flow_logs      = "false"
-        }
-     ]
+resource "google_compute_subnetwork" "subnet-1" {
+  name          = "web"
+  ip_cidr_range = "10.10.10.0/24"
+  network       = google_compute_network.custom.id
+  region        = var.region
+
+  secondary_ip_range  = [
+    {
+        range_name    = "services"
+        ip_cidr_range = "10.10.11.0/24"
+    },
+    {
+        range_name    = "pods"
+        ip_cidr_range = "10.1.0.0/20"
     }
+  ]
+
+  private_ip_google_access = true
+}
+
+resource "google_compute_subnetwork" "subnet-2" {
+  name          = "data"
+  ip_cidr_range = "10.20.10.0/24"
+  network       = google_compute_network.custom.id
+  region        = var.region
+
+  private_ip_google_access = true
+}
