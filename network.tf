@@ -1,5 +1,5 @@
 resource "google_compute_network" "vpc" {
-  name                    = "vpc-tfe"
+  name                    = "tfe-vpc"
   auto_create_subnetworks = "false" 
   routing_mode            = "GLOBAL"
 }
@@ -25,7 +25,7 @@ resource "google_compute_subnetwork" "subnet-1" {
 }
 
 resource "google_compute_subnetwork" "subnet-2" {
-  name          = "subnet-1"
+  name          = "subnet-02"
   ip_cidr_range = "10.20.10.0/24"
   network       = google_compute_network.vpc.id
   region        = var.region
